@@ -7,17 +7,13 @@ import Navbar from './components/Navbar'
 import { useAppContext } from './context'
 
 function App() {
-  const { cocktails } = useAppContext()
-  const drinks = cocktails.drinks
-  console.log(drinks)
+  // const { cocktails } = useAppContext()
+  // const drinks = cocktails.drinks
+
   return (
     <>
       <BrowserRouter>
         <Navbar />
-        <div>
-          {drinks &&
-            drinks.map((item, index) => <p key={index}>{item.idDrink}</p>)}
-        </div>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="about" element={<About />} />

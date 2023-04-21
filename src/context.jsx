@@ -1,38 +1,44 @@
 import axios from 'axios'
-import { useEffect } from 'react'
-import { useReducer } from 'react'
-import { createContext, useContext } from 'react'
-import reducer from './utils/reducer'
+import {
+  useState,
+  useEffect,
+  useCallback,
+  createContext,
+  useContext,
+} from 'react'
 
 export const AppContext = createContext()
 const url = 'https://www.thecocktaildb.com/api/json/v1/1/search.php?s='
 
-const initialState = {
-  cocktails: {},
-  loading: true,
-}
-
 export const AppProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(reducer, initialState)
+  const [loading, setLoading] = useState(true)
+  const [cocktails, setCocktails] = useState({})
+  const [word, setWord] = useState('')
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
+    setLoading(true)
     try {
-      dispatch({ type: 'LOADING' })
       const response = await axios.get(url)
       const data = response.data
-      console.log('how mnay times am i Called')
-      dispatch({ type: 'DISPLAY_DATA', payload: data })
+      setCocktails(data)
+      setLoading(false)
     } catch (error) {
       console.log(error.response)
+      setLoading(false)
     }
-  }
-  useEffect(() => {
-    console.log('use effect')
-    fetchData()
   }, [url])
 
+  useEffect(() => {
+    console.log('fetch')
+    fetchData()
+  }, [url, fetchData])
+
   return (
-    <AppContext.Provider value={{ ...state }}>{children}</AppContext.Provider>
+    <AppContext.Provider
+      value={{ loading, setLoading, cocktails, word, setWord }}
+    >
+      {children}
+    </AppContext.Provider>
   )
 }
 

@@ -329,6 +329,7 @@ Cocktail
 .drink span {
   margin-right: 0.5rem;
 }
+
 .drink-data {
   background: var(--primaryLightColor);
   padding: 0.25rem 0.5rem;
